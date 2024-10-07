@@ -88,6 +88,35 @@ chrome.runtime.onMessage.addListener(async function (message, sender, sendRespon
 // Fetch data from the OpenAI Chat Completion API
 async function fetchChatCompletion(messages, apiKey, apiModel) {
     try {
+        /*
+          TODO:
+          - Add a way to handle embedding get requests in the messages array
+          - Send this embedding response to the request to our chat endpoint
+
+        const embeddingsResponse = await fetch('http://127.0.0.1:54321/functions/v1/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                "messages": messages,
+                "model": apiModel,
+            })
+        });
+        
+        const response = await fetch('http://127.0.0.1:54321/functions/v1/chat', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+              },
+              body: JSON.stringify({
+                  "messages": messages,
+                  "model": apiModel,
+              })
+          });
+        */
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
