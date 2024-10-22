@@ -157,13 +157,13 @@ a {
 }
 
 .assistant {
-    color: green;
-    background-color: #e6ffe6;
+    color: #ffffff;
+    background-color: #989898;
 }
 
 .user {
-    color: blue;
-    background-color: #e6f7ff;
+    color: #989898;
+    background-color: #ffffff;
     margin-left: auto;
 }
 
@@ -179,12 +179,12 @@ a {
 }
 
 .action-btn {
-    color: #008001;
+    color: #7d7d7d;
     cursor: pointer;
 }
 
 .action-btn:hover {
-    color: #006600;
+    color: #5d5d5d;
 }
 
 .delete-btn {

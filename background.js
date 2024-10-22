@@ -14,6 +14,29 @@ chrome.runtime.onInstalled.addListener(function () {
     chrome.runtime.openOptionsPage();
 });
 
+function formatResponseFromChat(assistantResponse) {
+    let formattedResponse = assistantResponse;
+
+    // Replace bold (**text**)
+    formattedResponse = formattedResponse.replace(/\*\*(.+?)\*\*/g, function (match, boldText) {
+        return `<strong>${boldText}</strong>`;
+    });
+
+    // Replace italic (*text*)
+    formattedResponse = formattedResponse.replace(/\*(.+?)\*/g, function (match, italicText) {
+        return `<em>${italicText}</em>`;
+    });
+
+    // Replace inline code (using single backticks)
+    formattedResponse = formattedResponse.replace(/`([^`]+)`/g, function (match, codeText) {
+        return `<code>${codeText}</code>`;
+    });
+
+    return formattedResponse;
+}
+
+
+
 // Listen for messages from the popup script
 chrome.runtime.onMessage.addListener(async function (message, sender, sendResponse) {
 
@@ -35,21 +58,24 @@ chrome.runtime.onMessage.addListener(async function (message, sender, sendRespon
             chatHistory = result.chatHistory;
         }
 
-        // save user's message to message array
-        chatHistory.push({ role: "user", content: message.userInput });
+        // Format the user's message before saving it
+        const formattedUserMessage = formatMessageContent(message.userInput);
+
+        // Save user's formatted message to message array
+        chatHistory.push({ role: "user", content: formattedUserMessage });
 
         if (apiModel === "dall-e-3") {
-            // Send the user's message to the OpenAI API
+            // Send the user's message to the OpenAI API (image generation model)
             const response = await fetchImage(message.userInput, apiKey, apiModel);
 
             if (response && response.data && response.data.length > 0) {
                 // Get the image URL
                 const imageUrl = response.data[0].url;
 
-                // Add the assistant's response to the message array
+                // Add the assistant's response (image URL) to the message array
                 chatHistory.push({ role: "assistant", content: imageUrl });
 
-                // save message array to local storage
+                // Save message array to local storage
                 chrome.storage.local.set({ chatHistory: chatHistory });
 
                 // Send the image URL to the popup script
@@ -59,7 +85,7 @@ chrome.runtime.onMessage.addListener(async function (message, sender, sendRespon
             }
             return true; // Enable response callback
         } else {
-            // Send the user's message to the OpenAI API
+            // Send the user's message to the OpenAI API (chat model)
             const response = await fetchChatCompletion(chatHistory, apiKey, apiModel);
 
             if (response && response.choices && response.choices.length > 0) {
@@ -67,16 +93,19 @@ chrome.runtime.onMessage.addListener(async function (message, sender, sendRespon
                 // Get the assistant's response
                 const assistantResponse = response.choices[0].message.content;
 
-                // Add the assistant's response to the message array
-                chatHistory.push({ role: "assistant", content: assistantResponse });
+                // Format the assistant's response before saving it
+                const formattedAssistantResponse = formatResponseFromChat(assistantResponse);
 
-                // save message array to local storage
+                // Add the assistant's formatted response to the message array
+                chatHistory.push({ role: "assistant", content: formattedAssistantResponse });
+
+                // Save message array to local storage
                 chrome.storage.local.set({ chatHistory: chatHistory });
 
-                // Send the assistant's response to the popup script
-                chrome.runtime.sendMessage({ answer: assistantResponse });
+                // Send the assistant's formatted response to the popup script
+                chrome.runtime.sendMessage({ answer: formattedAssistantResponse });
 
-                console.log("Sent response to popup:", assistantResponse);
+                console.log("Sent formatted response to popup:", formattedAssistantResponse);
             }
             return true; // Enable response callback
         }
