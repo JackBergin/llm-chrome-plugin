@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // disable the send button
             sendBtn.disabled = true;
+
             // remove the icon from the send button and add the loading indicator
             sendBtn.innerHTML = '<i class="fa fa-spinner fa-pulse"></i>';
 
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Enable the send button again
         sendBtn.disabled = false;
         // Add the send icon to the send button and remove the loading indicator
-        sendBtn.innerHTML = '<i class="fa fa-paper-plane"></i>';
+        sendBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
 
         // Enable the input field again
         userInput.disabled = false;
