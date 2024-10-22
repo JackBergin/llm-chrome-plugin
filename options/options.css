@@ -6,17 +6,21 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-* {
+  }
+  
+  * {
     box-sizing: border-box;
-}
-
-.container {
+  }
+  
+  #form-wrapper {
+    display: flex;
+    justify-content: center; /* Centers the forms horizontally */
+    align-items: flex-start;  /* Aligns forms to the top */
+    gap: 20px; /* Space between the two forms */
+  }
+  
+  .container {
     width: 400px;
-    background: linear-gradient(#212121, #212121) padding-box,
-                linear-gradient(145deg, transparent 35%,#e81cff, #40c9ff) border-box;
-    border: 2px solid transparent;
     padding: 32px 24px;
     font-size: 14px;
     font-family: inherit;
@@ -26,65 +30,52 @@ body {
     gap: 20px;
     box-sizing: border-box;
     border-radius: 16px;
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-#input-container {
+  }
+  
+  #input-container {
     display: flex;
     flex-direction: row;
     gap: 10px;
-}
-
-input {
+  }
+  
+  input {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-}
-
-button {
+  }
+  
+  button {
     background-color: #4caf50;
     color: #fff;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-button:hover {
+  }
+  
+  button:hover {
     background-color: #45a049;
-}
-
-button i {
+  }
+  
+  button i {
     margin-right: 5px;
-}
-
-#save-button {
+  }
+  
+  #save-button {
     display: flex;
     align-items: center;
-}
-
-#delete-container {
+  }
+  
+  #delete-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: 10px;
     margin-top: 10px;
-}
-
-#delete-button {
-    background-color: #f44336;
-    padding: 10px 15px;
-}
-
-#delete-button:hover {
-    background-color: #d32f2f;
-}
-
-#status-message {
+  }
+  
+  #status-message {
     margin-top: 10px;
     color: #333;
-}
+  }
+  

@@ -10,26 +10,12 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1 id="optionsTitle"></h1>
-    <p id="apiTitle"></p>
-    <div id="input-container">
-      <input type="text" id="apiKey">
-      <button id="save-button" title="Save API key">
-        <i class="fa fa-save"></i>
-        <span id="save-button-text"></span>
-      </button>
-    </div>
-    <div id="delete-container">
-      <button id="delete-button" title="Delete API key">
-        <i class="fa fa-trash"></i>
-        <span id="delete-button-text"></span>
-      </button>
-      <p id="status-message"></p>
-    </div>
-    <p id="api-key-note" class="note"></p>
+  <div id="form-wrapper">
+    <div id="form-container"></div> <!-- This will contain the options and contact forms -->
   </div>
-  <script src="options.js"></script>
+
+  <!-- Link to the external script file -->
+  <script src="dynamic_import.js"></script>
 </body>
 
 </html>

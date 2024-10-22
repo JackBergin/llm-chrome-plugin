@@ -1,11 +1,22 @@
 {
-  "optionsTitle": {
-    "message": "Options",
+  "optionsFormTitle": {
+    "message": "API Key Options",
     "description": "Title of the options page"
   },
+  
+  "contactFormTitle": {
+    "message": "Contact Form",
+    "description": "Title of the options page"
+  },
+
   "apiTitle": {
-    "message": "Enter your OpenAI API key below to get started.",
+    "message": "OpenAI API Key",
     "description": "Title of the API-Key section"
+  },
+  
+  "contactTitle": {
+    "message": "Contact Form",
+    "description": "Title of the Contact Form section"
   },
   "apiModelTitle": {
     "message": "Choose API-Model:",
@@ -16,7 +27,7 @@
     "description": "Title of the last messages section"
   },
   "optionsInputPlaceholder": {
-    "message": "Enter your API key here",
+    "message": "Enter your API",
     "description": "Placeholder of the API-Key input"
   },
   "optionsApiKeyNote": {

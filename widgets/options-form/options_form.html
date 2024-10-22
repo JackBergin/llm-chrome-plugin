@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="contact_form.css">
+  <title>Options</title>
+  <!-- Adjust the path to be relative to the extension root directory -->
+  <link rel="stylesheet" href="../../widgets/options-form/options_form.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-  <div class="form-container">
-      <form class="form">
-      <div class="form-group">
-          <label for="email">Company Email</label>
-          <input type="text" id="email" name="email" required="">
-      </div>
-      <div class="form-group">
-          <label for="textarea">How Can We Help You?</label>
-          <textarea name="textarea" id="textarea" rows="10" cols="50" required="">          </textarea>
-      </div>
-      <button class="form-submit-btn" type="submit">Submit</button>
-      </form>
+  <div class="container">
+    <h1 id="optionsFormTitle">API Key Management</h1>
+    <p id="apiTitle">Manage your API key below</p>
+    <div id="input-container">
+      <input type="text" id="apiKey" placeholder="Enter your API key">
+      <button id="save-button" title="Save API key">
+        <i class="fa fa-save"></i>
+        <span id="save-button-text">Save</span>
+      </button>
+    </div>
+    <div id="delete-container">
+      <button id="delete-button" title="Delete API key">
+        <i class="fa fa-trash"></i>
+        <span id="delete-button-text">Delete</span>
+      </button>
+      <p id="status-message"></p>
+    </div>
+    <p id="api-key-note" class="note">Ensure your API key is correct before saving.</p>
   </div>
 </body>
 
