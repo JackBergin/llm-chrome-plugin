@@ -1,66 +1,123 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Fetch the elements from the DOM using their respective IDs
+    // Get form elements
     const apiKeyInput = document.getElementById('apiKey');
+    const togglePasswordButton = document.getElementById('toggle-password');
     const saveButton = document.getElementById('save-button');
     const deleteButton = document.getElementById('delete-button');
     const statusMessage = document.getElementById('status-message');
+    const defaultModelSelect = document.getElementById('default-model');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const autoClearToggle = document.getElementById('auto-clear-toggle');
 
-    // Function to display status messages and clear them after a specified timeout
-    function showStatusMessage(message, isSuccess = true) {
-        statusMessage.textContent = message;
-        statusMessage.style.color = isSuccess ? 'green' : 'red';
-        setTimeout(() => {
-            statusMessage.textContent = '';
-        }, 3000); // Clear the status message after 3 seconds
-    }
-
-    // Retrieve the saved API key from Chrome's local storage
-    chrome.storage.local.get(['apiKey'], function (result) {
-        if (chrome.runtime.lastError) {
-            console.error('Error retrieving API key from storage:', chrome.runtime.lastError);
-            showStatusMessage('Failed to retrieve saved API key.', false);
-            return;
-        }
-        if (result.apiKey) {
-            apiKeyInput.value = result.apiKey; // Populate the input field with the saved key
-        }
+    // Toggle password visibility
+    togglePasswordButton.addEventListener('click', function() {
+        const type = apiKeyInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        apiKeyInput.setAttribute('type', type);
+        togglePasswordButton.innerHTML = type === 'password' ? 
+            '<i class="fas fa-eye"></i>' : 
+            '<i class="fas fa-eye-slash"></i>';
     });
 
-    // Event listener for the Save button click
+    // Function to display status messages
+    function showStatusMessage(message, isSuccess = true) {
+        statusMessage.textContent = message;
+        statusMessage.style.color = isSuccess ? '#4caf50' : '#f44336';
+        setTimeout(() => {
+            statusMessage.textContent = '';
+        }, 3000);
+    }
+
+    // Load saved settings
+    function loadSavedSettings() {
+        // Load API key
+        chrome.storage.local.get(['apiKey'], function (result) {
+            if (result.apiKey) {
+                apiKeyInput.value = result.apiKey;
+            }
+        });
+
+        // Load default model
+        chrome.storage.local.get(['apiModel'], function (result) {
+            if (result.apiModel) {
+                defaultModelSelect.value = result.apiModel;
+            }
+        });
+
+        // Load dark mode setting
+        chrome.storage.local.get(['darkMode'], function (result) {
+            darkModeToggle.checked = result.darkMode !== undefined ? result.darkMode : true;
+        });
+
+        // Load auto-clear setting
+        chrome.storage.local.get(['autoClearChat'], function (result) {
+            autoClearToggle.checked = result.autoClearChat || false;
+        });
+    }
+
+    // Save API key
     saveButton.addEventListener('click', function () {
-        const apiKey = apiKeyInput.value.trim(); // Get and trim the entered API key
-    
-        // Validate the API key with length and structure checks
+        const apiKey = apiKeyInput.value.trim();
         if (apiKey !== '' && apiKey.length > 10 && apiKey.startsWith('sk-')) {
-            // Save the API key to Chrome's local storage
             chrome.storage.local.set({ apiKey }, function () {
-                if (chrome.runtime.lastError) {
-                    console.error('Error saving API key:', chrome.runtime.lastError);
-                    showStatusMessage('Failed to save API key.', false);
-                    return;
-                }
                 showStatusMessage('API key saved successfully!');
             });
         } else {
-            // Display an error message for invalid API key input
             showStatusMessage('Invalid API key. Please enter a valid API key.', false);
         }
     });
-    
 
-    // Event listener for the Delete button click
+    // Delete API key
     deleteButton.addEventListener('click', function () {
-        // Remove the API key from local storage
         chrome.storage.local.remove(['apiKey'], function () {
-            if (chrome.runtime.lastError) {
-                console.error('Error removing API key:', chrome.runtime.lastError);
-                showStatusMessage('Failed to delete API key.', false);
-                return;
-            }
-            apiKeyInput.value = ''; // Clear the input field
+            apiKeyInput.value = '';
             showStatusMessage('API key deleted successfully!');
         });
     });
+
+    // Save default model
+    defaultModelSelect.addEventListener('change', function() {
+        chrome.storage.local.set({ apiModel: this.value });
+    });
+
+    // Save dark mode setting
+    darkModeToggle.addEventListener('change', function() {
+        chrome.storage.local.set({ darkMode: this.checked });
+    });
+
+    // Save auto-clear setting
+    autoClearToggle.addEventListener('change', function() {
+        chrome.storage.local.set({ autoClearChat: this.checked });
+    });
+
+    // Initialize form with saved settings
+    loadSavedSettings();
+
+    // Initialize camera permission toggle
+    const cameraToggle = document.getElementById('camera-permission');
+    if (cameraToggle) {
+        // Load saved preference
+        chrome.storage.sync.get(['cameraEnabled'], (result) => {
+            cameraToggle.checked = result.cameraEnabled || false;
+        });
+
+        // Save changes
+        cameraToggle.addEventListener('change', (e) => {
+            chrome.storage.sync.set({ cameraEnabled: e.target.checked });
+            
+            // Request camera permission if enabled
+            if (e.target.checked) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        stream.getTracks().forEach(track => track.stop());
+                    })
+                    .catch(err => {
+                        console.error('Camera permission denied:', err);
+                        e.target.checked = false;
+                        chrome.storage.sync.set({ cameraEnabled: false });
+                    });
+            }
+        });
+    }
 
     // Localize the options page content using the Chrome i18n API
     try {
@@ -86,3 +143,36 @@ document.addEventListener('DOMContentLoaded', function () {
         showStatusMessage('Error loading localization messages.', false);
     }
 });
+
+class OptionsForm {
+    constructor() {
+        this.initializeCameraPermission();
+    }
+
+    initializeCameraPermission() {
+        const cameraToggle = document.getElementById('camera-permission');
+        
+        // Load saved preference
+        chrome.storage.sync.get(['cameraEnabled'], (result) => {
+            cameraToggle.checked = result.cameraEnabled || false;
+        });
+
+        // Save changes
+        cameraToggle.addEventListener('change', (e) => {
+            chrome.storage.sync.set({ cameraEnabled: e.target.checked });
+            
+            // Request camera permission if enabled
+            if (e.target.checked) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        stream.getTracks().forEach(track => track.stop());
+                    })
+                    .catch(err => {
+                        console.error('Camera permission denied:', err);
+                        e.target.checked = false;
+                        chrome.storage.sync.set({ cameraEnabled: false });
+                    });
+            }
+        });
+    }
+}

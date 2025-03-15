@@ -1,0 +1,97 @@
+#wellness-check {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #212121;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  z-index: 10000;
+  animation: slideIn 0.3s ease-out;
+  color: white;
+  border: 1px solid #3d3d3d;
+  max-width: 350px;
+}
+
+.wellness-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wellness-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wellness-header i {
+  color: #2196F3;
+  font-size: 24px;
+}
+
+.wellness-content h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.wellness-content textarea {
+  width: 100%;
+  height: 100px;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 12px;
+  resize: none;
+  color: white;
+  font-family: inherit;
+}
+
+.wellness-content textarea:focus {
+  outline: none;
+  border-color: #2196F3;
+}
+
+.wellness-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.wellness-content button {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wellness-content button:hover {
+  background: #1976D2;
+}
+
+.wellness-content .skip-btn {
+  background: transparent;
+  color: #9e9e9e;
+}
+
+.wellness-content .skip-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+} 

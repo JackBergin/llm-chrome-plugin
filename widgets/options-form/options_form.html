@@ -11,24 +11,74 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1 id="optionsFormTitle">API Key Management</h1>
-    <p id="apiTitle">Manage your API key below</p>
-    <div id="input-container">
-      <input type="text" id="apiKey" placeholder="Enter your API key">
-      <button id="save-button" title="Save API key">
-        <i class="fa fa-save"></i>
-        <span id="save-button-text">Save</span>
-      </button>
+  <div class="options-form">
+    <div class="form-section">
+      <h3>API Configuration</h3>
+      <div class="form-group">
+        <label for="apiKey">API Key</label>
+        <div class="input-with-button">
+          <input type="password" id="apiKey" placeholder="Enter your API key">
+          <button id="toggle-password" class="icon-button" title="Show/Hide Password">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="form-note">
+        <i class="fas fa-info-circle"></i>
+        <span id="api-key-note">Ensure your API key is correct before saving.</span>
+      </div>
+      
+      <div class="form-actions">
+        <button id="save-button" class="primary-button">
+          <i class="fas fa-save"></i>
+          <span id="save-button-text">Save</span>
+        </button>
+        <button id="delete-button" class="danger-button">
+          <i class="fas fa-trash"></i>
+          <span id="delete-button-text">Delete</span>
+        </button>
+      </div>
+      
+      <div id="status-message" class="status-message"></div>
     </div>
-    <div id="delete-container">
-      <button id="delete-button" title="Delete API key">
-        <i class="fa fa-trash"></i>
-        <span id="delete-button-text">Delete</span>
-      </button>
-      <p id="status-message"></p>
+    
+    <div class="form-section">
+      <h3>Model Selection</h3>
+      <div class="form-group">
+        <label for="default-model">Default AI Model</label>
+        <select id="default-model" class="select-dropdown">
+          <option value="gpt-4o">ChatGPT (GPT-4o)</option>
+          <option value="dall-e-3">DALL-E 3</option>
+          <option value="claude-3">Claude 3</option>
+        </select>
+      </div>
     </div>
-    <p id="api-key-note" class="note">Ensure your API key is correct before saving.</p>
+    
+    <div class="form-section">
+      <h3>Interface Settings</h3>
+      <div class="toggle-option">
+        <div class="toggle-info">
+          <span>Dark Mode</span>
+          <p class="toggle-description">Use dark theme across the extension</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="dark-mode-toggle" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+      
+      <div class="toggle-option">
+        <div class="toggle-info">
+          <span>Auto-Clear Chat</span>
+          <p class="toggle-description">Automatically clear chat history after closing</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="auto-clear-toggle">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
   </div>
 </body>
 

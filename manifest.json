@@ -9,11 +9,13 @@
         "128": "assets/icons/icon-128.png"
     },
     "host_permissions": [
-        "https://api.openai.com/v1/completions"
+        "<all_urls>"
     ],
     "permissions": [
         "storage",
-        "downloads"
+        "activeTab",
+        "tabs",
+        "videoCapture"
     ],
     "background": {
         "service_worker": "background.js"
@@ -22,5 +24,11 @@
         "default_popup": "popup/popup.html"
     },
     "options_page": "options/options.html",
-    "manifest_version": 3
+    "manifest_version": 3,
+    "web_accessible_resources": [
+        {
+            "resources": ["styles/wellness_check.css"],
+            "matches": ["<all_urls>"]
+        }
+    ]
 }

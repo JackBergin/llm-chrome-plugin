@@ -10,8 +10,98 @@
 </head>
 
 <body>
-  <div id="form-wrapper">
-    <div id="form-container"></div> <!-- This will contain the options and contact forms -->
+  <div class="tabs-container">
+    <!-- Tab navigation -->
+    <div class="tabs-navigation">
+      <button class="tab-button active" data-tab="info">
+        <i class="fas fa-info-circle"></i> Info
+      </button>
+      <button class="tab-button" data-tab="options">
+        <i class="fas fa-cog"></i> Options
+      </button>
+      <button class="tab-button" data-tab="contact">
+        <i class="fas fa-envelope"></i> Contact
+      </button>
+      <button class="tab-button" data-tab="privacy">
+        <i class="fas fa-shield-alt"></i> Privacy
+      </button>
+    </div>
+
+    <!-- Tab content -->
+    <div class="tab-content">
+      <!-- Info Tab -->
+      <div id="info" class="tab-pane active">
+        <div class="tab-header">
+          <h2>Welcome to Gamma</h2>
+        </div>
+        <div class="info-content">
+          <img src="../assets/icons/icon-128.png" alt="Gamma Logo" class="info-logo">
+          <h3>Our Mission</h3>
+          <p>Gamma helps you maintain mindful eating habits by using AI to detect when you're eating and checking in on your well-being.</p>
+          
+          <h3>Key Features</h3>
+          <ul>
+            <li><i class="fas fa-camera"></i> <strong>Meal Detection:</strong> Optional camera-based meal detection</li>
+            <li><i class="fas fa-comment-dots"></i> <strong>Wellness Check-ins:</strong> Friendly prompts during meals</li>
+            <li><i class="fas fa-robot"></i> <strong>AI Assistant:</strong> Powered by advanced language models</li>
+          </ul>
+          
+          <h3>Getting Started</h3>
+          <p>Configure your API key in the Options tab and enable camera access in the Privacy tab to get started.</p>
+        </div>
+      </div>
+
+      <!-- Options Tab -->
+      <div id="options" class="tab-pane">
+        <div class="tab-header">
+          <h2>Options</h2>
+        </div>
+        <div id="form-container"></div>
+      </div>
+
+      <!-- Contact Tab -->
+      <div id="contact" class="tab-pane">
+        <div class="tab-header">
+          <h2>Contact Us</h2>
+        </div>
+        <div id="contact-form-container"></div>
+      </div>
+
+      <!-- Privacy Tab -->
+      <div id="privacy" class="tab-pane">
+        <div class="tab-header">
+          <h2>Privacy Settings</h2>
+        </div>
+        <div class="privacy-content">
+          <div class="option-item">
+            <div class="option-info">
+              <h3>Camera Access</h3>
+              <p>Enable camera for meal detection. Your camera feed is processed locally and never stored.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="camera-permission">
+              <span class="slider round"></span>
+            </label>
+          </div>
+          
+          <div class="option-item">
+            <div class="option-info">
+              <h3>Data Collection</h3>
+              <p>We collect minimal data to improve your experience. All data is anonymized.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="data-collection" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+          
+          <div class="privacy-note">
+            <i class="fas fa-lock"></i>
+            <p>Your privacy is important to us. Camera data is processed locally on your device and is never stored or transmitted.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Link to the external script file -->

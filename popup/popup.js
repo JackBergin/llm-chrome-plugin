@@ -379,4 +379,26 @@ document.addEventListener('DOMContentLoaded', function () {
             assistantInfo.remove();
         }
     }
+
+    // Check if the popup was triggered by meal detection
+    chrome.storage.local.get(['pendingSystemMessage', 'popupTriggeredByMealDetection'], function(result) {
+        if (result.popupTriggeredByMealDetection && result.pendingSystemMessage) {
+            // Clear the flags
+            chrome.storage.local.remove(['pendingSystemMessage', 'popupTriggeredByMealDetection']);
+            
+            // Send the system message to the AI
+            const systemMessage = result.pendingSystemMessage;
+            
+            // Add a small delay to ensure the UI is ready
+            setTimeout(() => {
+                // Send the system message to the background script
+                chrome.runtime.sendMessage({ 
+                    systemMessage: systemMessage 
+                });
+                
+                // Show a loading message in the chat
+                displayMessage('system', 'Detecting your meal... preparing wellness check.');
+            }, 500);
+        }
+    });
 });

@@ -4,25 +4,26 @@
 <head>
     <link rel="stylesheet" href="popup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <body>
     <div id="header-container">
         <div class="dropdown">
             <button id="model-dropdown-btn" title="Change model">
                 <i id="model-dropdown-btn-icon" class="fa fa-robot"></i>
-                <span id="model-dropdown-btn-text"></span>
+                <span id="model-dropdown-btn-text">ChatGPT</span>
             </button>
             <div id="model-dropdown-content">
-                <a id="gpt-4o" class="model-dropdown-btn">CHAT-GPT</a>
-                <a id="dall-e-3" class="model-dropdown-btn">CURT CARLSON</a>
+                <a id="gpt-4o" class="model-dropdown-btn">ChatGPT</a>
+                <a id="dall-e-3" class="model-dropdown-btn">DALL-E 3</a>
+                <a id="claude-3" class="model-dropdown-btn">Claude 3</a>
             </div>
         </div>
         <div id="action-btn-container">
-            <button id="clear-chat-btn" title="Clear chat">
+            <button id="clear-chat-btn" class="header-button" title="Clear chat">
                 <i class="fa fa-trash"></i>
             </button>
-            <button id="settings-btn" title="Settings">
+            <button id="settings-btn" class="header-button" title="Settings">
                 <i class="fa fa-cog"></i>
             </button>
         </div>
@@ -31,9 +32,9 @@
         <div id="chat-messages"></div>
     </div>
     <div class="input-container">
-        <textarea id="user-input" placeholder="Message Gamma" rows="1"></textarea>
+        <textarea id="user-input" placeholder="Message Gamma..." rows="1"></textarea>
         <button id="send-btn" title="Send message">
-            <i class="fa fa-arrow-up"></i>
+            <i class="fa fa-paper-plane"></i>
         </button>
     </div>
 
