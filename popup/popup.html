@@ -7,6 +7,15 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
+    <div id="camera-container">
+        <video id="camera-view" autoplay muted></video>
+        <div class="camera-controls">
+            <button id="toggle-camera" class="camera-button" title="Toggle Camera">
+                <i class="fas fa-video"></i>
+            </button>
+        </div>
+    </div>
+
     <div id="header-container">
         <div class="dropdown">
             <button id="model-dropdown-btn" title="Change model">
@@ -20,7 +29,10 @@
             </div>
         </div>
         <div id="action-btn-container">
-            <button id="clear-chat-btn" class="header-button" title="Clear chat">
+            <button id="cancel-chat-btn" class="header-button" title="Cancel current chat">
+                <i class="fa fa-times"></i>
+            </button>
+            <button id="clear-chat-btn" class="header-button" title="Clear chat history">
                 <i class="fa fa-trash"></i>
             </button>
             <button id="settings-btn" class="header-button" title="Settings">
