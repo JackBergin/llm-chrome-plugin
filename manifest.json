@@ -1,7 +1,7 @@
 {
-    "name": "Gamma",
-    "version": "2.1.3",
-    "description": "Have a seamless AI Learning experience or generate stunning images, all without ever having to leave your website.",
+    "name": "Gamma Extension",
+    "version": "1.0",
+    "description": "AI-powered browser extension",
     "default_locale": "en",
     "icons": {
         "16": "assets/icons/icon-16.png",
@@ -21,7 +21,12 @@
         "service_worker": "background.js"
     },
     "action": {
-        "default_popup": "popup/popup.html"
+        "default_popup": "popup/popup.html",
+        "default_icon": {
+            "16": "assets/icons/icon-16.png",
+            "48": "assets/icons/icon-48.png",
+            "128": "assets/icons/icon-128.png"
+        }
     },
     "options_page": "options/options.html",
     "manifest_version": 3,
@@ -30,5 +35,8 @@
             "resources": ["styles/wellness_check.css"],
             "matches": ["<all_urls>"]
         }
-    ]
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    }
 }

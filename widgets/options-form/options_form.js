@@ -22,8 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function showStatusMessage(message, isSuccess = true) {
         statusMessage.textContent = message;
         statusMessage.style.color = isSuccess ? '#4caf50' : '#f44336';
+        // Make sure the message is visible
+        statusMessage.style.display = 'block';
+        
+        // Clear the message after 3 seconds
         setTimeout(() => {
             statusMessage.textContent = '';
+            statusMessage.style.display = 'none';
         }, 3000);
     }
 
@@ -45,48 +50,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Load dark mode setting
         chrome.storage.local.get(['darkMode'], function (result) {
-            darkModeToggle.checked = result.darkMode !== undefined ? result.darkMode : true;
+            // Default to true if not set
+            const isDarkMode = result.darkMode !== undefined ? result.darkMode : true;
+            darkModeToggle.checked = isDarkMode;
+            
+            // Apply theme to document
+            applyTheme(isDarkMode);
         });
 
         // Load auto-clear setting
-        chrome.storage.local.get(['autoClearChat'], function (result) {
-            autoClearToggle.checked = result.autoClearChat || false;
+        chrome.storage.local.get(['autoClear'], function (result) {
+            autoClearToggle.checked = result.autoClear || false;
         });
+    }
+
+    // Apply theme based on dark mode setting
+    function applyTheme(isDarkMode) {
+        if (isDarkMode) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
     }
 
     // Save API key
     saveButton.addEventListener('click', function () {
         const apiKey = apiKeyInput.value.trim();
-        if (apiKey !== '' && apiKey.length > 10 && apiKey.startsWith('sk-')) {
-            chrome.storage.local.set({ apiKey }, function () {
-                showStatusMessage('API key saved successfully!');
-            });
-        } else {
-            showStatusMessage('Invalid API key. Please enter a valid API key.', false);
+        
+        if (!apiKey) {
+            showStatusMessage('Please enter an API key', false);
+            return;
         }
+        
+        chrome.storage.local.set({ apiKey: apiKey }, function () {
+            showStatusMessage('API key saved successfully!');
+        });
     });
 
     // Delete API key
     deleteButton.addEventListener('click', function () {
-        chrome.storage.local.remove(['apiKey'], function () {
+        chrome.storage.local.remove('apiKey', function () {
             apiKeyInput.value = '';
             showStatusMessage('API key deleted successfully!');
         });
     });
 
     // Save default model
-    defaultModelSelect.addEventListener('change', function() {
-        chrome.storage.local.set({ apiModel: this.value });
+    defaultModelSelect.addEventListener('change', function () {
+        chrome.storage.local.set({ apiModel: this.value }, function () {
+            showStatusMessage('Default model saved successfully!');
+        });
     });
 
-    // Save dark mode setting
-    darkModeToggle.addEventListener('change', function() {
-        chrome.storage.local.set({ darkMode: this.checked });
+    // Toggle dark mode
+    darkModeToggle.addEventListener('change', function () {
+        const isDarkMode = this.checked;
+        
+        // Save to storage
+        chrome.storage.local.set({ darkMode: isDarkMode }, function () {
+            showStatusMessage('Theme preference saved successfully!');
+        });
+        
+        // Apply theme
+        applyTheme(isDarkMode);
+        
+        // Broadcast theme change to all extension pages
+        chrome.runtime.sendMessage({ 
+            action: 'themeChanged', 
+            darkMode: isDarkMode 
+        });
     });
 
-    // Save auto-clear setting
-    autoClearToggle.addEventListener('change', function() {
-        chrome.storage.local.set({ autoClearChat: this.checked });
+    // Toggle auto-clear
+    autoClearToggle.addEventListener('change', function () {
+        chrome.storage.local.set({ autoClear: this.checked }, function () {
+            showStatusMessage('Auto-clear preference saved successfully!');
+        });
     });
 
     // Initialize form with saved settings
@@ -96,13 +135,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const cameraToggle = document.getElementById('camera-permission');
     if (cameraToggle) {
         // Load saved preference
-        chrome.storage.sync.get(['cameraEnabled'], (result) => {
+        chrome.storage.local.get(['cameraEnabled'], (result) => {
             cameraToggle.checked = result.cameraEnabled || false;
         });
 
         // Save changes
         cameraToggle.addEventListener('change', (e) => {
-            chrome.storage.sync.set({ cameraEnabled: e.target.checked });
+            chrome.storage.local.set({ cameraEnabled: e.target.checked });
             
             // Request camera permission if enabled
             if (e.target.checked) {
@@ -113,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     .catch(err => {
                         console.error('Camera permission denied:', err);
                         e.target.checked = false;
-                        chrome.storage.sync.set({ cameraEnabled: false });
+                        chrome.storage.local.set({ cameraEnabled: false });
                     });
             }
         });

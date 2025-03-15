@@ -1,3 +1,5 @@
+@import url('../../styles/global.css');
+
 .form-container {
     width: 400px;
     background: linear-gradient(#212121, #212121) padding-box,
@@ -99,7 +101,7 @@
   }
   
   .contact-form {
-    color: #e0e0e0;
+    color: var(--text-secondary);
     padding: 0;
   }
   
@@ -115,17 +117,17 @@
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
-    color: #bdbdbd;
+    color: var(--text-secondary);
   }
   
   .form-group input,
   .form-group textarea {
     width: 100%;
     padding: 12px;
-    background: #333;
-    border: 1px solid #444;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
     border-radius: 6px;
-    color: white;
+    color: var(--text-primary);
     font-size: 14px;
     font-family: inherit;
   }
@@ -133,7 +135,7 @@
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
-    border-color: #2196F3;
+    border-color: var(--accent-color);
   }
   
   .form-group textarea {
@@ -193,7 +195,7 @@
   .contact-info {
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid #3d3d3d;
+    border-top: 1px solid var(--border-color);
   }
   
   .contact-info h3 {
@@ -201,7 +203,7 @@
     margin-bottom: 20px;
     font-size: 18px;
     font-weight: 500;
-    color: #2196F3;
+    color: var(--accent-color);
   }
   
   .contact-method {
@@ -213,7 +215,7 @@
   
   .contact-method i {
     font-size: 20px;
-    color: #2196F3;
+    color: var(--accent-color);
     margin-top: 3px;
   }
   
@@ -225,7 +227,7 @@
   
   .contact-method p {
     margin: 0;
-    color: #bdbdbd;
+    color: var(--text-secondary);
   }
   
   .social-links {
@@ -235,13 +237,13 @@
   }
   
   .social-links a {
-    color: #bdbdbd;
+    color: var(--text-muted);
     font-size: 18px;
     transition: color 0.2s;
   }
   
   .social-links a:hover {
-    color: #2196F3;
+    color: var(--accent-color);
   }
   
   

@@ -12,13 +12,66 @@ document.addEventListener('DOMContentLoaded', function () {
     let stream = null;
     let cameraEnabled = false;
 
-    // If the user has not entered an API key, open the options page
+    // Apply theme based on dark mode setting
+    chrome.storage.local.get(['darkMode'], function (result) {
+        // Default to true if not set
+        const isDarkMode = result.darkMode !== undefined ? result.darkMode : true;
+        
+        if (isDarkMode) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    });
+
+    // Check if the user has an API key, but don't redirect automatically
     chrome.storage.local.get('apiKey', ({ apiKey }) => {
         console.log('apiKey', apiKey);
         if (!apiKey || apiKey.length < 10) {
-            chrome.runtime.openOptionsPage();
+            // Show a message instead of redirecting
+            displayApiKeyMissing();
         }
     });
+
+    // Function to display API key missing message
+    function displayApiKeyMissing() {
+        // Clear chat messages
+        chatMessages.innerHTML = '';
+        
+        // Create a div element for the message
+        const messageElement = document.createElement('div');
+        messageElement.id = 'assistant-info-wrapper';
+
+        // Create an img element for the icon
+        const icon = document.createElement('img');
+        icon.src = '/assets/icons/icon-128.png';
+        icon.alt = 'Assistant icon';
+        icon.className = 'assistant-info-icon';
+        messageElement.appendChild(icon);
+
+        // Create a p element for the text
+        const text = document.createElement('p');
+        text.innerText = 'Please set up your API key in settings to continue.';
+        text.className = 'assistant-info-text';
+        messageElement.appendChild(text);
+
+        // Create a button to go to settings
+        const settingsButton = document.createElement('button');
+        settingsButton.innerText = 'Go to Settings';
+        settingsButton.className = 'primary-button';
+        settingsButton.style.marginTop = '20px';
+        settingsButton.addEventListener('click', function() {
+            chrome.runtime.openOptionsPage();
+        });
+        messageElement.appendChild(settingsButton);
+
+        // Append the message element to the chatMessages container
+        chatMessages.appendChild(messageElement);
+        
+        // Disable input and send button
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+    }
 
     // Fetch chat history from local storage and display it
     chrome.storage.local.get(['chatHistory'], function (result) {

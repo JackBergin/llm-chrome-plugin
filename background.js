@@ -217,3 +217,17 @@ function getStorageData(keys) {
         chrome.storage.local.get(keys, (result) => resolve(result));
     });
 }
+
+// Listen for changes to the darkMode setting
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    if (changes.darkMode && namespace === 'local') {
+        // Broadcast theme change to all extension pages
+        const isDarkMode = changes.darkMode.newValue;
+        
+        // Send message to all extension pages
+        chrome.runtime.sendMessage({ 
+            action: 'themeChanged', 
+            darkMode: isDarkMode 
+        });
+    }
+});
