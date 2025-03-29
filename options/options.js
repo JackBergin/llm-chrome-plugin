@@ -47,6 +47,44 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 2000);
         });
     });
+
+    // Add camera toggle functionality
+    const cameraToggle = document.getElementById('cameraToggle');
+    const cameraStatus = document.getElementById('camera-status');
+
+    // Load saved camera permission state
+    chrome.storage.local.get(['cameraEnabled'], function(result) {
+        cameraToggle.checked = result.cameraEnabled || false;
+        updateCameraStatus(result.cameraEnabled);
+    });
+
+    cameraToggle.addEventListener('change', function() {
+        const enabled = this.checked;
+        
+        if (enabled) {
+            // Request camera permissions
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    stream.getTracks().forEach(track => track.stop()); // Stop the stream immediately
+                    chrome.storage.local.set({ cameraEnabled: true });
+                    updateCameraStatus(true);
+                })
+                .catch(function(err) {
+                    console.error("Error accessing camera:", err);
+                    cameraToggle.checked = false;
+                    chrome.storage.local.set({ cameraEnabled: false });
+                    updateCameraStatus(false);
+                    alert("Could not access camera. Please check your browser permissions.");
+                });
+        } else {
+            chrome.storage.local.set({ cameraEnabled: false });
+            updateCameraStatus(false);
+        }
+    });
+
+    function updateCameraStatus(enabled) {
+        cameraStatus.textContent = enabled ? 'Camera is enabled' : 'Camera is disabled';
+    }
 });
 
 // localize title optionsTitle

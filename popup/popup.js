@@ -378,4 +378,39 @@ document.addEventListener('DOMContentLoaded', function () {
             assistantInfo.remove();
         }
     }
+
+    // Add camera functionality
+    const cameraPreview = document.getElementById('camera-preview');
+    let stream = null;
+
+    // Check if camera is enabled
+    chrome.storage.local.get(['cameraEnabled'], function(result) {
+        if (result.cameraEnabled) {
+            startCamera();
+        }
+    });
+
+    function startCamera() {
+        navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                width: 100,
+                height: 75,
+                facingMode: 'user'
+            } 
+        })
+        .then(function(videoStream) {
+            stream = videoStream;
+            cameraPreview.srcObject = stream;
+        })
+        .catch(function(err) {
+            console.error("Error accessing camera:", err);
+        });
+    }
+
+    // Clean up camera stream when popup closes
+    window.addEventListener('unload', function() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+    });
 });
